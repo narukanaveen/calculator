@@ -101,7 +101,6 @@ if (decimalBtn) {
   });
 }
 
-// Backspace / Delete logic
 if (backspaceBtn) {
   backspaceBtn.addEventListener("click", () => {
     if (shouldResetDisplay) return;

@@ -90,7 +90,6 @@ color:#fff;
 font-size:2rem;
 }
 
-/* Clear takes 2 cols now */
 .btn.clear{
 background-color:#a5a5a5;
 color:#000;
@@ -101,7 +100,6 @@ font-size:1.6rem;
 font-weight:500;
 }
 
-/* Backspace button style */
 .btn.backspace{
 background-color:#a5a5a5;
 color:#000;
@@ -117,7 +115,6 @@ justify-content:flex-start;
 padding-left:28px;
 }
 
-/* Mobile responsiveness for compact screens */
 @media (max-width: 380px){
 .calculator{
 padding:16px;
