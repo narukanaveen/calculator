@@ -2,6 +2,10 @@
 
 A responsive web calculator built with vanilla HTML, CSS, and JavaScript as part of **The Odin Project** Foundations curriculum. The UI replicates the dark-mode aesthetic of the iOS calculator.
 
+## 🚀 Live Demo
+
+https://narukanaveen.github.io/calculator/
+
 ## ✨ Features
 
 - **Math Operations**: Addition, subtraction, multiplication, and division
