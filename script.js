@@ -31,36 +31,50 @@ function operate(operator, a, b) {
   return roundResult(result);
 }
 const display = document.getElementById("display");
-const digitButtons = document.querySelectorAll(".btn.digit");
+const historyDisplay = document.getElementById("history");
+const digitButtons = document.querySelectorAll(".btn.digit:not(.decimal):not(.zero)");
+const zeroBtn = document.querySelector(".btn.zero");
 const clearBtn = document.getElementById("Clear");
 const operatorButtons = document.querySelectorAll(".btn.operator");
 const equalsBtn = document.getElementById("equals");
 const decimalBtn = document.getElementById("decimal");
 
+function handleDigit(digit) {
+  if (shouldResetDisplay) {
+    firstNumber = digit;
+    display.textContent = firstNumber;
+    historyDisplay.textContent = "";
+    shouldResetDisplay = false;
+    return;
+  }
+  if (!operator) {
+    firstNumber += digit;
+    display.textContent = firstNumber;
+  } else {
+    secondNumber += digit;
+    display.textContent = secondNumber;
+    historyDisplay.textContent = `${firstNumber} ${operator}`;
+  }
+}
+
 digitButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    const digit = button.textContent.trim();
-    if (shouldResetDisplay) {
-      firstNumber = digit;
-      display.textContent = firstNumber;
-      shouldResetDisplay = false;
-      return;
-    }
-    if (!operator) {
-      firstNumber += digit;
-      display.textContent = firstNumber;
-    } else {
-      secondNumber += digit;
-      display.textContent = secondNumber;
-    }
+    handleDigit(button.textContent.trim());
   });
 });
+
+if (zeroBtn) {
+  zeroBtn.addEventListener("click", () => {
+    handleDigit("0");
+  });
+}
 
 if (decimalBtn) {
   decimalBtn.addEventListener("click", () => {
     if (shouldResetDisplay) {
       firstNumber = "0.";
       display.textContent = firstNumber;
+      historyDisplay.textContent = "";
       shouldResetDisplay = false;
       return;
     }
@@ -81,6 +95,7 @@ if (decimalBtn) {
         secondNumber += ".";
         display.textContent = secondNumber;
       }
+      historyDisplay.textContent = `${firstNumber} ${operator}`;
     }
   });
 }
@@ -91,6 +106,7 @@ clearBtn.addEventListener("click", () => {
   secondNumber = "";
   shouldResetDisplay = false;
   display.textContent = "0";
+  historyDisplay.textContent = "";
 });
 
 operatorButtons.forEach((button) => {
@@ -103,6 +119,7 @@ operatorButtons.forEach((button) => {
         firstNumber = "";
         operator = "";
         secondNumber = "";
+        historyDisplay.textContent = "";
         return;
       }
       firstNumber = result.toString();
@@ -110,12 +127,14 @@ operatorButtons.forEach((button) => {
     }
     if (firstNumber !== "") {
       operator = button.dataset.operator;
+      historyDisplay.textContent = `${firstNumber} ${operator}`;
     }
   });
 });
 
 equalsBtn.addEventListener("click", () => {
   if (firstNumber !== "" && operator !== "" && secondNumber !== "") {
+    historyDisplay.textContent = `${firstNumber} ${operator} ${secondNumber}`;
     const result = operate(operator, firstNumber, secondNumber);
 
     display.textContent = result;
