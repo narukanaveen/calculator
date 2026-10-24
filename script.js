@@ -12,6 +12,7 @@ function roundResult(number) {
   if (typeof number !== "number" || isNaN(number)) return number;
   return Math.round(number * 10000) / 10000;
 }
+
 function operate(operator, a, b) {
   a = Number(a);
   b = Number(b);
@@ -30,11 +31,13 @@ function operate(operator, a, b) {
   }
   return roundResult(result);
 }
+
 const display = document.getElementById("display");
 const historyDisplay = document.getElementById("history");
 const digitButtons = document.querySelectorAll(".btn.digit:not(.decimal):not(.zero)");
 const zeroBtn = document.querySelector(".btn.zero");
 const clearBtn = document.getElementById("Clear");
+const backspaceBtn = document.getElementById("backspace");
 const operatorButtons = document.querySelectorAll(".btn.operator");
 const equalsBtn = document.getElementById("equals");
 const decimalBtn = document.getElementById("decimal");
@@ -82,20 +85,37 @@ if (decimalBtn) {
     if (!operator) {
       if (firstNumber === "") {
         firstNumber = "0.";
-        display.textContent = firstNumber;
       } else if (!firstNumber.includes(".")) {
         firstNumber += ".";
-        display.textContent = firstNumber;
       }
+      display.textContent = firstNumber;
     } else {
       if (secondNumber === "") {
         secondNumber = "0.";
-        display.textContent = secondNumber;
       } else if (!secondNumber.includes(".")) {
         secondNumber += ".";
-        display.textContent = secondNumber;
       }
+      display.textContent = secondNumber;
       historyDisplay.textContent = `${firstNumber} ${operator}`;
+    }
+  });
+}
+
+// Backspace / Delete logic
+if (backspaceBtn) {
+  backspaceBtn.addEventListener("click", () => {
+    if (shouldResetDisplay) return;
+
+    if (!operator) {
+      if (firstNumber.length > 0) {
+        firstNumber = firstNumber.slice(0, -1);
+        display.textContent = firstNumber === "" ? "0" : firstNumber;
+      }
+    } else {
+      if (secondNumber.length > 0) {
+        secondNumber = secondNumber.slice(0, -1);
+        display.textContent = secondNumber === "" ? "0" : secondNumber;
+      }
     }
   });
 }

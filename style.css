@@ -11,11 +11,13 @@ display:flex;
 justify-content:center;
 align-items:center;
 min-height:100vh;
+padding:16px;
 }
 
 .calculator{
 background-color:#000000;
-width:340px;
+width:100%;
+max-width:340px;
 padding:20px;
 border-radius:40px;
 box-shadow:0px 20px 40px rgba(0,0,0,0.6);
@@ -88,13 +90,22 @@ color:#fff;
 font-size:2rem;
 }
 
+/* Clear takes 2 cols now */
 .btn.clear{
 background-color:#a5a5a5;
 color:#000;
-grid-column:span 3;
+grid-column:span 2;
 aspect-ratio:auto;
 border-radius:40px;
 font-size:1.6rem;
+font-weight:500;
+}
+
+/* Backspace button style */
+.btn.backspace{
+background-color:#a5a5a5;
+color:#000;
+font-size:1.4rem;
 font-weight:500;
 }
 
@@ -104,4 +115,28 @@ aspect-ratio:auto;
 border-radius:40px;
 justify-content:flex-start;
 padding-left:28px;
+}
+
+/* Mobile responsiveness for compact screens */
+@media (max-width: 380px){
+.calculator{
+padding:16px;
+border-radius:32px;
+}
+.display-current{
+font-size:3rem;
+}
+.buttons{
+gap:8px;
+}
+.btn{
+font-size:1.5rem;
+}
+.btn.operator,
+.btn.equals{
+font-size:1.7rem;
+}
+.btn.zero{
+padding-left:22px;
+}
 }
