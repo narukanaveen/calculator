@@ -1,44 +1,51 @@
-const add = (a, b) => a + b;
-const subtract = (a, b) => a - b;
-const multiply = (a, b) => a * b;
-const divide = (a, b) => (b === 0 ? "Error" : a / b);
+const add = (a,b) => a+b;
+const subtract = (a,b) => a-b;
+const multiply = (a,b) => a*b;
+const divide = (a,b) => (b===0 ? "Error" : a / b);
 
-let firstNumber = "";
-let operator = "";
-let secondNumber = "";
+let firstNumber ="";
+let operator ="";
+let secondNumber ="";
 let shouldResetDisplay = false;
 
+function roundResult(number) {
+  if (typeof number !== "number" || isNaN(number)) return number;
+  return Math.round(number * 10000) / 10000;
+}
 function operate(operator, a, b) {
   a = Number(a);
   b = Number(b);
 
+  let result;
   if (operator === "+") {
-    return add(a, b);
+    result = add(a, b);
   } else if (operator === "-") {
-    return subtract(a, b);
+    result = subtract(a, b);
   } else if (operator === "*") {
-    return multiply(a, b);
+    result = multiply(a, b);
   } else if (operator === "/") {
-    return divide(a, b);
+    result = divide(a, b);
   } else {
     return null;
   }
+  return roundResult(result);
 }
-
 const display = document.getElementById("display");
 const digitButtons = document.querySelectorAll(".btn.digit");
+const clearBtn = document.getElementById("Clear");
+const operatorButtons = document.querySelectorAll(".btn.operator");
+const equalsBtn = document.getElementById("equals");
+const decimalBtn = document.getElementById("decimal");
 
 digitButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const digit = button.textContent.trim();
-
     if (shouldResetDisplay) {
       firstNumber = digit;
       display.textContent = firstNumber;
       shouldResetDisplay = false;
       return;
     }
-
     if (!operator) {
       firstNumber += digit;
       display.textContent = firstNumber;
@@ -49,8 +56,34 @@ digitButtons.forEach((button) => {
   });
 });
 
-const clearBtn = document.getElementById("Clear");
-const operatorButtons = document.querySelectorAll(".btn.operator");
+if (decimalBtn) {
+  decimalBtn.addEventListener("click", () => {
+    if (shouldResetDisplay) {
+      firstNumber = "0.";
+      display.textContent = firstNumber;
+      shouldResetDisplay = false;
+      return;
+    }
+
+    if (!operator) {
+      if (firstNumber === "") {
+        firstNumber = "0.";
+        display.textContent = firstNumber;
+      } else if (!firstNumber.includes(".")) {
+        firstNumber += ".";
+        display.textContent = firstNumber;
+      }
+    } else {
+      if (secondNumber === "") {
+        secondNumber = "0.";
+        display.textContent = secondNumber;
+      } else if (!secondNumber.includes(".")) {
+        secondNumber += ".";
+        display.textContent = secondNumber;
+      }
+    }
+  });
+}
 
 clearBtn.addEventListener("click", () => {
   firstNumber = "";
@@ -62,11 +95,11 @@ clearBtn.addEventListener("click", () => {
 
 operatorButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    shouldResetDisplay= false;
+    shouldResetDisplay = false;
     if (firstNumber !== "" && operator !== "" && secondNumber !== "") {
-        const result = operate(operator, firstNumber, secondNumber);
-        display.textContent = result;
-        if (result === "Error") {
+      const result = operate(operator, firstNumber, secondNumber);
+      display.textContent = result;
+      if (result === "Error") {
         firstNumber = "";
         operator = "";
         secondNumber = "";
@@ -80,8 +113,6 @@ operatorButtons.forEach((button) => {
     }
   });
 });
-
-const equalsBtn = document.getElementById("equals");
 
 equalsBtn.addEventListener("click", () => {
   if (firstNumber !== "" && operator !== "" && secondNumber !== "") {
