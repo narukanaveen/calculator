@@ -23,3 +23,19 @@ function operate(operator,a,b){
     return null;
     }
 }
+
+const display = document.getElementById("display");
+const digitButtons = document.querySelectorAll(".btn.digit");
+
+digitButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        const digit = button.textContent;
+        if(!operator){
+            firstNumber += digit;
+            display.textContent = firstNumber;
+        } else{
+            secondNumber += digit;
+            display.textContent = secondNumber;
+        }
+    });
+});
